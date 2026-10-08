@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Point Editor</title>
+<link href="mystyle.css" type='text/css' rel='stylesheet'>
+</head>
+<body>
+<main>
+<h1>Point Editor</h1>
+<p>This is a tool that makes creating arrays of points easier.</p>
+<p>Press z to remove the last point</p>
+<p>Press Backspace/Delete <b>while over a point</b> to remove that point</p>
+<label for="name">Pattern Name:</label>
+<input id="name" value="Test">
+<label for="total_rows">Total Rows</label>
+<input id="total_rows" type="number" value=10 min=1 max=20 onchange="setup()">
+<button onclick="reset()">Reset</button>
+<div id="results"></div>
+<canvas id="mycanvas" width="500" height="500">
+
+</canvas>
+</main>
+<script>
+function reset()
+{
+    points=[];
+    update_point_str();
+}
+function convert_point_to_decimal(point)
+{
+    let modified_point=[...point];
+    modified_point[0]=modified_point[0]/c.width;
+    modified_point[0]=Math.round((modified_point[0] + Number.EPSILON) * 100) / 100;
+
+    modified_point[1]=modified_point[1]/c.height;
+    modified_point[1]=Math.round((modified_point[1] + Number.EPSILON) * 100) / 100;
+    return modified_point;
+}
+function update_point_str()
+{
+    let pattern_name=document.getElementById("name").value;
+    points_str=`patterns.push(["${pattern_name}",[`;
+    for(let point of points)
+    {
+        modified_point=convert_point_to_decimal(point);
+        points_str+="["+modified_point+"],";
+    }
+    points_str+="]]);";
+    console.log(points_str);
+    document.getElementById("results").innerHTML=points_str;
+    draw_points();
+}
+function getMousePosition(canvas, event) 
+{
+    let rect = canvas.getBoundingClientRect();
+    x = cursor_x - rect.left;
+    y = cursor_y - rect.top;
+    x=Math.floor(x/round_factor)*round_factor+round_factor/2+offset;
+    y=Math.floor(y/round_factor)*round_factor+round_factor/2+offset;
+    
+    return x,y;
+}
+function draw_points()
+{
+    clear();
+    point_num=1;
+    for(let point of points)
+    {
+        ctx.fillStyle="#ffffff";
+        ctx.beginPath();
+        ctx.arc(point[0],point[1],round_factor/2,0,2*Math.PI);
+        ctx.fill();
+        ctx.closePath();
+    
+        ctx.font = "48px serif";
+        ctx.textAlign="center";
+        ctx.textBaseline="top";
+        
+        ctx.fillStyle="#939393";
+        ctx.fillText(point_num,point[0],point[1]-round_factor/2)
+        point_num+=1;
+    }
+}
+function clear()
+{
+    ctx.fillStyle="#000000";
+    ctx.fillRect(0,0,c.width,c.height);
+    for(let i=0;i<c.height;i+=round_factor)
+    {
+        ctx.strokeStyle="#ffffff";
+        ctx.beginPath();
+        ctx.moveTo(0,i+offset);
+        ctx.lineTo(c.width,i+offset);
+        ctx.stroke();
+        ctx.closePath();
+    }
+    for(let i=0;i<c.height;i+=round_factor)
+    {
+        ctx.strokeStyle="#ffffff";
+        ctx.beginPath();
+        ctx.moveTo(i+offset,0);
+        ctx.lineTo(i+offset,c.height);
+        ctx.stroke();
+        ctx.closePath();
+    }
+}
+function handle_click(c,e)
+{
+    x,y=getMousePosition(c,e);
+    //alert("Coordinate x: " + x+"Coordinate y: " + y);
+    points.push([x,y]);
+    update_point_str();
+    
+}
+function handle_key_input(e)
+{
+    if(e.code=="KeyZ")
+    {
+        points.pop();
+        draw_points();
+    }
+    else if(e.code=="Backspace")
+    {
+        x,y=getMousePosition(c,e);
+        point=[x,y];
+        //modified_point=convert_point_to_decimal(point);
+        console.log(points);
+        for(let i=0;i<points.length;i++)
+        {
+            if(points[i][0]==point[0]&&points[i][1]==point[1])
+            {
+                console.log(`DELETE ${i}`);
+                points.splice(i,1);
+                break;
+            }
+        }
+        draw_points();
+    }
+    console.log(points);
+    update_point_str();
+}
+function setup()
+{
+    total_rows=parseInt(document.getElementById("total_rows").value);
+    round_factor=500/total_rows;
+    points=[];
+    clear();
+}
+
+let c=document.getElementById("mycanvas");
+c.addEventListener("mousedown", function (e) {
+    handle_click(c, e);
+});
+c.onmousemove = function(event)
+{
+    cursor_x = event.pageX;
+    cursor_y = event.pageY;
+}
+let x=0;
+let y=0;
+    
+let ctx=c.getContext("2d");
+let points=[];
+let total_rows=parseInt(document.getElementById("total_rows").value);
+let round_factor=500/total_rows;
+let offset=(c.height-round_factor*Math.floor(c.height/round_factor))/2;
+clear();
+    
+document.addEventListener('keyup', (e) => 
+{
+    handle_key_input(e);
+});
+</script>
+</body>
+</html>

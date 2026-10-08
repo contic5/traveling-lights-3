@@ -1,0 +1,32 @@
+main
+{
+    background: black;
+    border: lightblue solid 2px;
+    margin:auto;
+    padding:10px;
+    max-width:600px;
+}
+#canvas_holder
+{
+    width:100vw;
+    display: block;
+}
+canvas
+{
+    display: block;
+    margin: auto;
+}
+body
+{
+    color:white;
+    background: black;
+}
+.block
+{
+    display:block;
+}
+input,select
+{
+    display:inline-block;
+    margin-bottom:10px;
+}
