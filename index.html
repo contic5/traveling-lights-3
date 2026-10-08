@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Travelling Lights</title>
+      <script type="module" crossorigin src="/traveling-lights-3/assets/index-D1tiKYp0.js"></script>
+      <link rel="stylesheet" crossorigin href="/traveling-lights-3/assets/index-CTCZ85pn.css">
+    </head>
+    <body>
+    <main>
+    <h1>Travelling Lights</h1>
+    <h2>Notes</h2>
+    <p>Be careful with settings because you can hurt your eyes. Do not maximize points between and move speed together. Only change one of the two values.</p>
+    <h2>Settings</h2>
+    <form>
+    <div class="block">
+    <label for="patterns">Pattern</label>
+    <select id="patterns" onchange=updatevalues></select>
+    </div>
+        
+    <div class="block">
+    <label for="audio_src">Song</label>
+    <select id="audio_src" onchange=updatesong()>
+    <option value="Cosmic_Groove-Cooper_Cannell.mp3">Cosmic Groove by Cooper Cannell</option>
+    <option value="In_the_Atmosphere-Bad_Snacks.mp3">In the Atmosphere by Bad Snacks</option>
+    <option value="Kiss_the_Sky-Aakash_Gandhi.mp3">Kiss the Sky by Aakash Gandhi</option>
+    <option value="Lifting_Dreams-Aakash_Gandhi.mp3">Lifting Dreams by Aakash Gandhi</option>
+    <option value="Seaside_Piazza-Aaron_Kenny.mp3">Seaside Piazza by Aaron Kenny</option>
+    <option value="The_Closing_Of_Summer-Asher_Fulero.mp3">The Closing Of Summer by Asher Fulero</option>
+    <option value="Walk_into_Paradise-Carmen_María_and_Edu_Espinal.mp3">Walk into Paradise by Carmen María and Edu Espinal</option>
+    <option value="Walking_in_the_Sky-Nico_Staf.mp3">Walking in the Sky by Nico Staf</option>
+    </select>
+    </div>
+    
+    <div class="block">
+    <label for="points_between">Points Between</label>
+    <input id="points_between" type="range" min=0 max=3 value=0 step=1 onchange=updatevalues>
+    </div>
+        
+    <div class="block">
+    <label for="radius">Radius</label>
+    <input type="range" id="radius" min=0 max=50 value=20 onchange=updatevalues>
+    </div>
+        
+    <div class="block">
+    <label for="movespeed">Move Speed</label>
+    <input type="range" id="movespeed" min=0 max=50 value=10 onchange=updatevalues>
+    </div>
+    
+    <div class="block">
+    <label for="minlight">Min Light</label>
+    <input type="range" id="minlight" min=0 max=100 value=0 onchange=updatevalues>
+    </div>
+    
+    <div class="block">
+    <label for="maxlight">Max Light</label>
+    <input type="range" id="maxlight" min=0 max=100 value=80 onchange=updatevalues>
+    </div>
+    
+    <div class="block">
+    <label for="light_difference">Light Difference</label>
+    <input id="light_difference" type="range" min=0 max=50 value=30 step=5 onchange=updatevalues>
+    </div>
+        
+    <div class="block">
+    <label for="hue_difference">Hue Difference</label>
+    <input id="hue_difference" type="range" min=0 max=100 value=30 step=10 onchange=updatevalues>
+    </div>
+    
+    <div class="block">
+    <label for="clear_every_frame">Clear Every Frame (Creates Dots)</label>
+    <input type="checkbox" id="clear_every_frame">
+    </div>
+        
+    <div class="block">
+    <label for="all_lights">All Lights</label>
+    <input type="checkbox" id="all_lights">
+    </div>
+        
+    <div class="block">
+    <label for="moving">Moving</label>
+    <input type="checkbox" id="moving" checked>
+    </div>
+        
+    <div class="block">
+    <label for="reverse">Reverse</label>
+    <input type="checkbox" id="reverse">
+    </div>
+
+    <audio src="/traveling-lights-3/assets/Cosmic_Groove-Cooper_Cannell-Ccg5l2tk.mp3" controls id="audio_player"></audio>
+    </form>
+    <h2>Results</h2>
+    </main>
+    <div id="canvas_holder">
+    <canvas id="mycanvas" width="780" height="780">
+    
+    </canvas>
+    </div>
+    </body>
+</html>
